@@ -31,10 +31,12 @@ public class EchoClient extends JFrame {
                     String fromServer = dis.readUTF();
                     System.out.println("Message from server: " + fromServer);
                     if (fromServer.equalsIgnoreCase("/finish")) {
+                        dos.writeUTF(fromServer);
                         closeConnection();
+                        dispose();
                         break;
                     }
-                    chatArea.append(fromServer + "\n");
+                    chatArea.append("Message from server: " + fromServer + "\n");
                 }
             } catch (Exception e) {
                 e.printStackTrace();
@@ -48,7 +50,8 @@ public class EchoClient extends JFrame {
         System.out.println("Message to server: " + msg);
         if (msg != null && !msg.trim().isEmpty()) {
             try {
-                dos.writeUTF(msgInputField.getText());
+                dos.writeUTF(msg);
+                chatArea.append("Message to server: " + msg + "\n");
                 msgInputField.setText("");
                 msgInputField.grabFocus();
             } catch (IOException e) {
